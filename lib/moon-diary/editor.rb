@@ -13,9 +13,6 @@ module DiaryEditor
 			@day = time.day
 			@month =  time.month
 			@year = time.year
-			say "current day:#{@day}"
-			say "current month:#{@month}"
-			say "current Year:#{@year}"
 		end
 
 		def run
@@ -35,7 +32,7 @@ module DiaryEditor
 			create_directory(path)
 			write_configuration
 		end
-    def create_directory(path)
+        def create_directory(path)
 			say path
 			unless File.directory?(path)
 				FileUtils.mkdir_p(path)
@@ -43,25 +40,35 @@ module DiaryEditor
 		end
 		def create_diary
 			diary_path = "#{create_month_dir}/#{@year}-#{@month}-#{@day}.md"
-			say diary_path
+
+			FileUtils.touch(diary_path) unless File.exist?(diary_path)
+			# content = File.open(diary_path, "w") do |file|
+			# 	file.write "记录今日\n ===="
+			# end
+
+            cmd = ["vim", '--nofork', diary_path].join(' ')
+	        system(cmd) or raise SystemCallError, "`#{cmd}` gave exit status: #{$?.exitstatus}"
+
 		end
 
-		def create_year_dir
-			year_dir = "#{@configuration['path']}/#{@year}"
-			say year_dir
-			unless File.directory?(year_dir)
-				FileUtils.mkdir_p(year_dir)
-			end
-			year_dir
-		end
 		def create_month_dir
 			month_dir = "#{create_year_dir}/#{@month}月"
-			say month_dir
+			
 			unless File.directory?(month_dir)
 				FileUtils.mkdir_p(month_dir)
 			end
 			month_dir
 		end
+
+		def create_year_dir
+			year_dir = "#{@configuration['path']}/#{@year}"
+
+			unless File.directory?(year_dir)
+				FileUtils.mkdir_p(year_dir)
+			end
+			year_dir
+		end
+
 		
 		def write_configuration
 			File.open(CONFIGURATION_FILE, "w") do |file|
