@@ -29,7 +29,14 @@ module DiaryEditor
 		def diary_path
 			path = ask("You should input the directory of diary.") { |q| q.default = "none" }
 			@configuration['path'] = path
+			create_directory(path)
 			write_configuration
+		end
+    def create_directory(path)
+			say path
+			unless File.directory?(path)
+				FileUtils.mkdir_p(path)
+			end
 		end
 		
 		def write_configuration
