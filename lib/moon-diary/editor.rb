@@ -2,14 +2,18 @@ require 'fileutils'
 require 'tempfile'
 require 'json'
 require 'date'
+require 'highline/import'
 
 module DiaryEditor
 	class Diary
 		CONFIGURATION_FILE = File.expand_path("~/.oneday")
 		attr_accessor :configuration
 		def initialize(*args, opts)
-			@month = Date::MONTHNAMES[Date.today.month]
+			time = Time.new
+			@month =  time.month
+			@year = time.year
 			say "current month:#{@month}"
+			say "current Year:#{@year}"
 		end
 
 		def run
@@ -29,7 +33,7 @@ module DiaryEditor
 		end
 		
 		def write_configuration
-			File.open(CONFIGURATION_FILE, w) do |file|
+			File.open(CONFIGURATION_FILE, "w") do |file|
 				file.write @configuration.to_json
 		  end
 		end
