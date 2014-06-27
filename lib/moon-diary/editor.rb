@@ -17,7 +17,7 @@ module DiaryEditor
 		end
 		
 		def configure
-			FileUtils.touch(CONFIGURATION_FILE) uless File.exist?(CONFIGURATION_FILE)
+			FileUtils.touch(CONFIGURATION_FILE) unless File.exist?(CONFIGURATION_FILE)
 			@configuration = JSON::load(File.open(CONFIGURATION_FILE)) || {}
 			diary_path unless @configuration['path']
 		end
