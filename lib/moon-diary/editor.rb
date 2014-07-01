@@ -42,9 +42,6 @@ module DiaryEditor
 			diary_path = "#{create_month_dir}/#{@year}-#{@month}-#{@day}.md"
 
 			FileUtils.touch(diary_path) unless File.exist?(diary_path)
-			# content = File.open(diary_path, "w") do |file|
-			# 	file.write "记录今日\n ===="
-			# end
 
             cmd = ["vim", '--nofork', diary_path].join(' ')
 	        system(cmd) or raise SystemCallError, "`#{cmd}` gave exit status: #{$?.exitstatus}"
@@ -52,8 +49,23 @@ module DiaryEditor
 		end
 
 		def save_to_dayone(file_path)
-			cmd = ["dayone", 'new <', file_path].join(' ')
-			system(cmd) or raise SystemCallError, "`#{cmd}` gave exit status: #{$?.exitstatus}"
+			if (which("dayone"))
+				cmd = ["dayone", 'new <', file_path].join(' ')
+				system(cmd) or raise SystemCallError, "`#{cmd}` gave exit status: #{$?.exitstatus}"
+			else
+				say "if you want to save to dayone, you can visit http://dayoneapp.com/tools/cli-man/"
+			end
+		end
+
+		def which(cmd)
+		  exts = ENV['PATHEXT'] ? ENV['PATHEXT'].split(';') : ['']
+		  ENV['PATH'].split(File::PATH_SEPARATOR).each do |path|
+		    exts.each { |ext|
+		      exe = File.join(path, "#{cmd}#{ext}")
+		      return exe if File.executable? exe
+		    }
+		  end
+		  return nil
 		end
 
 		def create_month_dir
