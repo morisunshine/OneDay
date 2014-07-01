@@ -48,7 +48,12 @@ module DiaryEditor
 
             cmd = ["vim", '--nofork', diary_path].join(' ')
 	        system(cmd) or raise SystemCallError, "`#{cmd}` gave exit status: #{$?.exitstatus}"
+	        save_to_dayone(diary_path)
+		end
 
+		def save_to_dayone(file_path)
+			cmd = ["dayone", 'new <', file_path].join(' ')
+			system(cmd) or raise SystemCallError, "`#{cmd}` gave exit status: #{$?.exitstatus}"
 		end
 
 		def create_month_dir
