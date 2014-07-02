@@ -16,18 +16,17 @@ do
             year=`echo $filename | awk '{split($0,a,"-"); print a[1]}'` # = 12
             month=`echo $filename | awk '{split($0,a,"-"); print a[2]}'` # = 12
 
-            if [[ "$month" < 10 ]]; then
-                echo "小于10"
-                # $month = 0$month
+            if [[ "$month" -le 10 ]]; then
+                month=0$month
             fi
             Tmpday=`echo $filename | awk '{split($0,a,"-"); print a[3]}'` # = 56
             day=`echo $Tmpday | awk '{split($0,a,"."); print a[1]}'`
-            if [[ "$day" < 10 ]]; then
-                echo "小于10"
-                # $day = 0$day
+
+            if [[ "$day" -le 10 ]]; then
+                day=0$day
             fi
             echo "$day/$month/$year"
-	    	# dayone -d="$month/$day/$year" -s=true new < $subFile
+	    	dayone -d="$month/$day/$year" -s=true new < $subFile
 	    done
         echo $file 是目录
     fi
