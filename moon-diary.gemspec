@@ -7,7 +7,7 @@ require "moon-diary/version"
 Gem::Specification.new do |gem|
 
 	gem.name = 'moon-diary'
-	gem.version = '0.0.0'
+	gem.version = MoonDiary::VERSION
 	gem.date = '2014-06-26'
 	gem.summary = "a simple diary command"
 	gem.description = "a simple diary command !"
