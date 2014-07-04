@@ -49,7 +49,7 @@ module DiaryEditor
 
 		def save_to_dayone(file_path)
 			if (which("dayone"))
-				cmd = ["dayone -d=\"#{@month}/#{@day}/#{@year}\"",'-s=true new <', file_path].join(' ')
+				cmd = ["dayone -d=\"#{@month}/#{@day}/#{@year}\"",'new <', file_path].join(' ')
 				system(cmd) or raise SystemCallError, "`#{cmd}` gave exit status: #{$?.exitstatus}"
 			else
 				say "if you want to save to dayone, you can visit http://dayoneapp.com/tools/cli-man/"
